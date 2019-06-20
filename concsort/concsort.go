@@ -2,7 +2,10 @@ package concsort
 
 import (
 	"math"
+	"runtime"
 )
+
+var MaxGoroutine int
 
 // Sort To concurrently merge sort a Slice of int
 func Sort(array []int) <-chan []int {
@@ -14,6 +17,10 @@ func split(array []int) <-chan []int {
 
 	go func() {
 		defer close(outChan)
+
+		if runtime.NumGoroutine() > MaxGoroutine {
+			MaxGoroutine = runtime.NumGoroutine()
+		}
 
 		// fmt.Println("Splitting array ", array)
 		// fmt.Println("Number of goroutines running ", runtime.NumGoroutine())
@@ -52,6 +59,11 @@ func merge(chanArr1 <-chan []int, chanArr2 <-chan []int) <-chan []int {
 
 	go func() {
 		defer close(outChan)
+
+		if runtime.NumGoroutine() > MaxGoroutine {
+			MaxGoroutine = runtime.NumGoroutine()
+		}
+
 		size := len(arr1) + len(arr2)
 		var workArr []int
 
