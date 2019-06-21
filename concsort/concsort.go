@@ -5,6 +5,7 @@ import (
 	"runtime"
 )
 
+// MaxGoroutine Captures the maximum number of goroutines in a single run
 var MaxGoroutine int
 
 // Sort To concurrently merge sort a Slice of int
